@@ -1,0 +1,104 @@
+/* Global Styles */
+body {
+    background: linear-gradient(135deg, #e0f7fa 0%, #a3d8f4 100%);
+    color: #1a2e44;
+    line-height: 1.6;
+    overflow-x: hidden;
+}
+
+.header {
+    background: linear-gradient(90deg, #2ecc71, #27ae60);
+    position: fixed;
+    width: 100%;
+    z-index: 50;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.logo {
+    width: 150px;
+    height: 150px;
+    border-radius: 50%;
+    overflow: hidden;
+    object-fit: cover;
+    transition: transform 0.3s ease;
+}
+
+.logo:hover {
+    transform: scale(1.1);
+}
+
+.nav-links a {
+    color: white;
+    font-size: 1.2rem;
+    font-weight: 600;
+    text-decoration: none;
+    transition: color 0.3s ease, transform 0.3s ease;
+}
+
+.nav-links a:hover {
+    color: #f1c40f;
+    transform: translateY(-2px);
+}
+
+.hero-bg {
+    background: url('https://source.unsplash.com/1600x900/?african-forest') no-repeat center center/cover;
+    min-height: 100vh;
+    position: relative;
+}
+
+.hero-overlay {
+    background: rgba(0, 0, 0, 0.5);
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.card {
+    background: rgba(255, 255, 255, 0.95);
+    border-radius: 15px;
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+    backdrop-filter: blur(5px);
+    padding: 2rem;
+}
+
+.cta-button {
+    background: #2ecc71;
+    color: white;
+    padding: 0.75rem 1.5rem;
+    border-radius: 10px;
+    font-weight: 600;
+    text-decoration: none;
+    transition: all 0.3s ease;
+}
+
+.cta-button:hover {
+    background: #27ae60;
+    transform: translateY(-2px) scale(1.05);
+    box-shadow: 0 5px 15px rgba(46, 204, 113, 0.4);
+}
+
+h2 {
+    color: #27ae60;
+}
+
+h3 {
+    color: #2ecc71;
+}
+
+section {
+    padding-top: 80px;
+}
+
+.bg-white {
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.bg-white:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+}
+
+footer {
+    background: linear-gradient(90deg, #1a2e44, #2c3e50);
+}

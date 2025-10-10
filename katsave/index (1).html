@@ -1,0 +1,197 @@
+<script type="text/javascript">
+        var gk_isXlsx = false;
+        var gk_xlsxFileLookup = {};
+        var gk_fileData = {};
+        function filledCell(cell) {
+          return cell !== '' && cell != null;
+        }
+        function loadFileData(filename) {
+        if (gk_isXlsx && gk_xlsxFileLookup[filename]) {
+            try {
+                var workbook = XLSX.read(gk_fileData[filename], { type: 'base64' });
+                var firstSheetName = workbook.SheetNames[0];
+                var worksheet = workbook.Sheets[firstSheetName];
+
+                // Convert sheet to JSON to filter blank rows
+                var jsonData = XLSX.utils.sheet_to_json(worksheet, { header: 1, blankrows: false, defval: '' });
+                // Filter out blank rows (rows where all cells are empty, null, or undefined)
+                var filteredData = jsonData.filter(row => row.some(filledCell));
+
+                // Heuristic to find the header row by ignoring rows with fewer filled cells than the next row
+                var headerRowIndex = filteredData.findIndex((row, index) =>
+                  row.filter(filledCell).length >= filteredData[index + 1]?.filter(filledCell).length
+                );
+                // Fallback
+                if (headerRowIndex === -1 || headerRowIndex > 25) {
+                  headerRowIndex = 0;
+                }
+
+                // Convert filtered JSON back to CSV
+                var csv = XLSX.utils.aoa_to_sheet(filteredData.slice(headerRowIndex)); // Create a new sheet from filtered array of arrays
+                csv = XLSX.utils.sheet_to_csv(csv, { header: 1 });
+                return csv;
+            } catch (e) {
+                console.error(e);
+                return "";
+            }
+        }
+        return gk_fileData[filename] || "";
+        }
+        </script><!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Katsave Sustain Planet International</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <link rel="icon" type="image/png" href="logo.png">
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body class="overflow-x-hidden">
+    <!-- Header -->
+    <header class="header">
+        <nav class="container mx-auto px-6 py-4 flex justify-between items-center">
+            <img src="logo.png" alt="KASPI Logo" class="logo">
+            <div class="nav-links space-x-6">
+                <a href="#home" class="nav-link">Home</a>
+                <a href="#about" class="nav-link">About</a>
+                <a href="#mission" class="nav-link">Mission</a>
+                <a href="#activities" class="nav-link">Activities</a>
+                <a href="#contact" class="nav-link">Contact</a>
+            </div>
+        </nav>
+    </header>
+
+    <!-- Hero Section -->
+    <section id="home" class="hero-bg">
+        <div class="hero-overlay">
+            <div class="text-center px-6 py-12 card max-w-4xl mx-auto">
+                <h1 class="text-5xl md:text-6xl font-bold mb-4">Katsave Sustain Planet International</h1>
+                <p class="text-xl md:text-2xl mb-6">Marshall Plan 2050</p>
+                <p class="text-lg md:text-xl mb-6">A Global Framework for Climate Action, Sustainable Development, Spiritual-Ecological Renewal, and Transformative Innovation</p>
+                <p class="text-md md:text-lg mb-6">Director: Dr. Kamugisha Marsiale (PhD)</p>
+                <p class="text-3xl font-semibold mb-6">“Care, Conserve, and Sustain”</p>
+                <div class="space-x-4">
+                    <a href="#contact" class="cta-button">Join Us</a>
+                    <a href="#contact" class="cta-button">Volunteer</a>
+                    <a href="#contact" class="cta-button">Support</a>
+                    <a href="#about" class="cta-button">Learn More</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- About Section -->
+    <section id="about" class="container mx-auto px-6 py-16">
+        <h2 class="text-4xl font-bold mb-8 text-center">What We Are</h2>
+        <div class="grid md:grid-cols-2 gap-12 items-center">
+            <div>
+                <p class="text-lg mb-4">Katsave Sustain Planet International (KASPI) is a nonprofit born from a lifelong passion for nature, inspired by the melodies of birds, unique trees, bees, rocks, and hot springs. Founded by Dr. Kamugisha Marsiale, its roots trace back to a childhood connection with the natural world, deepened by environmental studies in Uganda and Costa Rica.</p>
+                <p class="text-lg mb-4">Guided by the Earth Charter and Laudato Si', KASPI tackles climate change impacts like droughts and biodiversity loss, promoting pragmatic solutions and amplifying African youth voices for a sustainable future.</p>
+            </div>
+            <div>
+                <img src="https://source.unsplash.com/600x400/?nature-conservation" alt="Nature Conservation" class="rounded-lg shadow-lg">
+            </div>
+        </div>
+        <h3 class="text-3xl font-semibold mt-12 mb-6">What KASPI Stands For</h3>
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            <div class="bg-white p-6 rounded-lg shadow-md hover:shadow-lg transition duration-300">
+                <strong>K</strong> – Knowledge & Innovation: Equip youth with eco-skills.
+            </div>
+            <div class="bg-white p-6 rounded-lg shadow-md hover:shadow-lg transition duration-300">
+                <strong>A</strong> – Awareness & Action: Inspire ecological care.
+            </div>
+            <div class="bg-white p-6 rounded-lg shadow-md hover:shadow-lg transition duration-300">
+                <strong>S</strong> – Sustainability & Solutions: Promote lasting solutions.
+            </div>
+            <div class="bg-white p-6 rounded-lg shadow-md hover:shadow-lg transition duration-300">
+                <strong>P</strong> – Partnerships & Participation: Involve all voices.
+            </div>
+            <div class="bg-white p-6 rounded-lg shadow-md hover:shadow-lg transition duration-300">
+                <strong>I</strong> – Inclusion & Integrity: Uphold diversity and ethics.
+            </div>
+        </div>
+    </section>
+
+    <!-- Vision & Mission Section -->
+    <section id="mission" class="bg-gradient-to-r from-teal-100 to-green-100 py-16">
+        <div class="container mx-auto px-6">
+            <h2 class="text-4xl font-bold mb-12 text-center">Vision & Mission</h2>
+            <div class="grid md:grid-cols-2 gap-12">
+                <div class="bg-white p-6 rounded-lg shadow-md">
+                    <h3 class="text-2xl font-semibold mb-4">Vision</h3>
+                    <p class="text-lg">A restored and resilient planet where humanity lives in harmony with nature, guided by innovation and spiritual renewal.</p>
+                </div>
+                <div class="bg-white p-6 rounded-lg shadow-md">
+                    <h3 class="text-2xl font-semibold mb-4">Mission</h3>
+                    <p class="text-lg">Enhance global wisdom and drive transformative action for a united, sustainable planet.</p>
+                </div>
+            </div>
+            <h3 class="text-3xl font-semibold mt-12 mb-6 text-center">Core Values</h3>
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+                <span class="bg-white p-3 rounded-lg shadow-md text-center">Stewardship</span>
+                <span class="bg-white p-3 rounded-lg shadow-md text-center">Innovation</span>
+                <span class="bg-white p-3 rounded-lg shadow-md text-center">Empowerment</span>
+                <span class="bg-white p-3 rounded-lg shadow-md text-center">Collaboration</span>
+                <span class="bg-white p-3 rounded-lg shadow-md text-center">Integrity</span>
+                <span class="bg-white p-3 rounded-lg shadow-md text-center">Spirituality</span>
+                <span class="bg-white p-3 rounded-lg shadow-md text-center">Sustainability</span>
+                <span class="bg-white p-3 rounded-lg shadow-md text-center">Eco-spirituality</span>
+                <span class="bg-white p-3 rounded-lg shadow-md text-center">Indigenous Wisdom</span>
+                <span class="bg-white p-3 rounded-lg shadow-md text-center">Earth Charter</span>
+                <span class="bg-white p-3 rounded-lg shadow-md text-center">Accountability</span>
+            </div>
+        </div>
+    </section>
+
+    <!-- Activities Section -->
+    <section id="activities" class="container mx-auto px-6 py-16">
+        <h2 class="text-4xl font-bold mb-12 text-center">Core Objectives & Activities</h2>
+        <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+            <div class="bg-white p-6 rounded-lg shadow-md hover:shadow-lg transition duration-300">
+                <h3 class="text-xl font-semibold mb-2">Conserve Nature</h3>
+                <p>Plant 20,000 trees and establish 5 green spaces annually.</p>
+                <img src="https://source.unsplash.com/300x200/?tree-planting" alt="Tree Planting" class="mt-4 rounded-lg">
+            </div>
+            <div class="bg-white p-6 rounded-lg shadow-md hover:shadow-lg transition duration-300">
+                <h3 class="text-xl font-semibold mb-2">Agroforestry</h3>
+                <p>Distribute 20,000 seedlings and host 2 farmer schools yearly.</p>
+                <img src="https://source.unsplash.com/300x200/?agroforestry" alt="Agroforestry" class="mt-4 rounded-lg">
+            </div>
+            <div class="bg-white p-6 rounded-lg shadow-md hover:shadow-lg transition duration-300">
+                <h3 class="text-xl font-semibold mb-2">Regenerative Agriculture</h3>
+                <p>Train farmers in composting and conduct 12 coffee farm visits.</p>
+                <img src="https://source.unsplash.com/300x200/?sustainable-farming" alt="Sustainable Farming" class="mt-4 rounded-lg">
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact Section -->
+    <section id="contact" class="bg-gradient-to-r from-green-700 to-teal-600 text-white py-16">
+        <div class="container mx-auto px-6">
+            <h2 class="text-4xl font-bold mb-12 text-center">Contact Us</h2>
+            <div class="grid md:grid-cols-2 gap-12">
+                <div class="bg-white bg-opacity-10 p-6 rounded-lg">
+                    <h3 class="text-2xl font-semibold mb-4">Head Office</h3>
+                    <p>P.O. Box 422644, Mbarara, Uganda</p>
+                    <p>Telephone: (+256) 782365878</p>
+                    <p>Email: <a href="mailto:katsaveplanet@gmail.com" class="underline hover:text-green-200">katsaveplanet@gmail.com</a></p>
+                </div>
+                <div class="bg-white bg-opacity-10 p-6 rounded-lg">
+                    <h3 class="text-2xl font-semibold mb-4">Get Involved</h3>
+                    <p class="mb-4">Join us in sustaining the planet. Volunteer, support, or learn more!</p>
+                    <a href="#home" class="bg-green-500 text-white px-6 py-3 rounded-lg font-semibold hover:bg-green-400 transition duration-300">Get Started</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-gray-900 text-white py-6 text-center">
+        <p>&copy; 2025 Katsave Sustain Planet International. All rights reserved.</p>
+    </footer>
+
+    <script src="script.js"></script>
+</body>
+</html>
