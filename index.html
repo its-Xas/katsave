@@ -1,4 +1,23 @@
-<script type="text/javascript">
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Katsave Sustain Planet International (KASPI)</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+  <link rel="icon" type="image/png" href="logo.png" />
+  <style>
+    html {
+      scroll-behavior: smooth;
+    }
+    body {
+      font-family: "Poppins", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    }
+  </style>
+
+  <!-- XLSX helper (kept from your original file) -->
+  <script type="text/javascript">
     var gk_isXlsx = false;
     var gk_xlsxFileLookup = {};
     var gk_fileData = {};
@@ -11,24 +30,16 @@
           var workbook = XLSX.read(gk_fileData[filename], { type: 'base64' });
           var firstSheetName = workbook.SheetNames[0];
           var worksheet = workbook.Sheets[firstSheetName];
-
-          // Convert sheet to JSON to filter blank rows
           var jsonData = XLSX.utils.sheet_to_json(worksheet, { header: 1, blankrows: false, defval: '' });
-          // Filter out blank rows (rows where all cells are empty, null, or undefined)
           var filteredData = jsonData.filter(row => row.some(filledCell));
-
-          // Heuristic to find the header row by ignoring rows with fewer filled cells than the next row
           var headerRowIndex = filteredData.findIndex((row, index) =>
             row.filter(filledCell).length >= filteredData[index + 1]?.filter(filledCell).length
           );
-          // Fallback
           if (headerRowIndex === -1 || headerRowIndex > 25) {
             headerRowIndex = 0;
           }
-
-          // Convert filtered JSON back to CSV
-          var csv = XLSX.utils.aoa_to_sheet(filteredData.slice(headerRowIndex)); // Create a new sheet from filtered array of arrays
-          csv = XLSX.utils.sheet_to_csv(csv, { header: 1 });
+          var csvSheet = XLSX.utils.aoa_to_sheet(filteredData.slice(headerRowIndex));
+          var csv = XLSX.utils.sheet_to_csv(csvSheet, { header: 1 });
           return csv;
         } catch (e) {
           console.error(e);
@@ -37,90 +48,95 @@
       }
       return gk_fileData[filename] || "";
     }
-</script>
-
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Katsave Sustain Planet International</title>
-  <script src="https://cdn.tailwindcss.com"></script>
-  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
-  <link rel="icon" type="image/png" href="logo.png">
-  <link rel="stylesheet" href="styles.css">
+  </script>
 </head>
-<body class="overflow-x-hidden font-[Poppins] bg-gray-50 text-gray-900">
+
+<body class="bg-gray-50 text-gray-900 overflow-x-hidden">
 
   <!-- Header -->
-  <header class="header bg-white/80 backdrop-blur shadow-sm sticky top-0 z-40">
-    <nav class="container mx-auto px-6 py-4 flex justify-between items-center">
+  <header class="bg-white/90 backdrop-blur shadow-sm sticky top-0 z-40">
+    <nav class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-3 flex items-center justify-between">
       <div class="flex items-center space-x-3">
-        <img src="logo.png" alt="KASPI Logo" class="logo h-12 w-auto">
+        <img src="logo.png" alt="KASPI Logo" class="h-10 w-10 object-contain" />
         <div class="hidden sm:block">
-          <p class="font-semibold text-lg">Katsave Sustain Planet International</p>
+          <p class="font-semibold text-base sm:text-lg">Katsave Sustain Planet International</p>
           <p class="text-xs text-gray-500">Marshall Plan 2050</p>
         </div>
       </div>
-      <div class="nav-links space-x-4 md:space-x-6 text-sm md:text-base">
-        <a href="#home" class="nav-link hover:text-green-700">Home</a>
-        <a href="#about" class="nav-link hover:text-green-700">About</a>
-        <a href="#mission" class="nav-link hover:text-green-700">Mission</a>
-        <a href="#philosophy" class="nav-link hover:text-green-700">Philosophy</a>
-        <a href="#activities" class="nav-link hover:text-green-700">Programs</a>
-        <a href="#research" class="nav-link hover:text-green-700">Research</a>
-        <a href="#strategic-plan" class="nav-link hover:text-green-700">Strategic Plan</a>
-        <a href="#contact" class="nav-link hover:text-green-700">Contact</a>
+      <div class="hidden md:flex items-center space-x-5 text-sm font-medium">
+        <a href="#home" class="hover:text-emerald-700">Home</a>
+        <a href="#about" class="hover:text-emerald-700">About</a>
+        <a href="#mission" class="hover:text-emerald-700">Vision & Mission</a>
+        <a href="#philosophy" class="hover:text-emerald-700">Philosophy</a>
+        <a href="#activities" class="hover:text-emerald-700">What We Do</a>
+        <a href="#research" class="hover:text-emerald-700">Research</a>
+        <a href="#strategic-plan" class="hover:text-emerald-700">Strategic Plan</a>
+        <a href="#contact" class="hover:text-emerald-700">Contact</a>
       </div>
     </nav>
   </header>
 
-  <!-- Hero Section -->
-  <section id="home" class="hero-bg relative">
-    <div class="hero-overlay bg-gradient-to-br from-green-900/80 via-emerald-800/80 to-teal-800/80">
-      <div class="text-center px-6 py-16 md:py-24 card max-w-5xl mx-auto text-white">
+  <!-- Hero -->
+  <section id="home" class="relative">
+    <div
+      class="absolute inset-0 bg-[url('https://images.unsplash.com/photo-1469474968028-56623f02e42e?auto=format&fit=crop&w=1200&q=80')] bg-cover bg-center opacity-30 pointer-events-none">
+    </div>
+    <div class="relative bg-gradient-to-br from-emerald-900/90 via-emerald-800/95 to-teal-800/95 text-white">
+      <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-16 md:py-24 text-center">
         <div class="flex justify-center mb-4 text-4xl">
           <span>🌳</span>
         </div>
-        <h1 class="text-4xl md:text-6xl font-bold mb-4 leading-tight">
+        <h1 class="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-extrabold leading-tight mb-4">
           Katsave Sustain Planet International (KASPI)
         </h1>
-        <p class="text-xl md:text-2xl mb-2 font-medium">Marshall Plan 2050</p>
-        <p class="text-lg md:text-xl mb-4">
+        <p class="text-lg sm:text-xl md:text-2xl font-medium mb-2">
+          Marshall Plan 2050
+        </p>
+        <p class="text-sm sm:text-base md:text-lg mb-4 max-w-3xl mx-auto">
           A Global Framework for Climate Action, Sustainable Development, Spiritual-Ecological Renewal,
           and Transformative Innovation — starting from Africa, guided by the Earth Charter and
           <span class="italic">Laudato Si’</span>.
         </p>
-        <p class="text-md md:text-lg mb-4">
+        <p class="text-sm sm:text-base mb-2">
           Director: <span class="font-semibold">Dr. Kamugisha Marsiale (PhD)</span>
         </p>
-        <p class="text-2xl md:text-3xl font-semibold mb-6">
+        <p class="text-xl sm:text-2xl md:text-3xl font-semibold mb-8">
           “Care, Conserve, and Sustain”
         </p>
 
-        <div class="flex flex-wrap justify-center gap-3 mb-6">
-          <a href="#contact" class="cta-button bg-green-500 hover:bg-green-400 text-white px-5 py-2 rounded-full font-semibold shadow-md">
+        <div class="flex flex-wrap justify-center gap-3 mb-10">
+          <a href="#contact"
+             class="inline-flex items-center justify-center px-5 py-2.5 rounded-full bg-emerald-500 hover:bg-emerald-400 text-sm sm:text-base font-semibold shadow-md">
             Join Us
           </a>
-          <a href="#contact" class="cta-button bg-emerald-500 hover:bg-emerald-400 text-white px-5 py-2 rounded-full font-semibold shadow-md">
+          <a href="#contact"
+             class="inline-flex items-center justify-center px-5 py-2.5 rounded-full bg-teal-500 hover:bg-teal-400 text-sm sm:text-base font-semibold shadow-md">
             Volunteer
           </a>
-          <a href="#contact" class="cta-button bg-teal-500 hover:bg-teal-400 text-white px-5 py-2 rounded-full font-semibold shadow-md">
+          <a href="#contact"
+             class="inline-flex items-center justify-center px-5 py-2.5 rounded-full border border-white/70 hover:bg-white/10 text-sm sm:text-base font-semibold">
             Support
           </a>
-          <a href="#about" class="cta-button border border-white/70 hover:bg-white/10 text-white px-5 py-2 rounded-full font-semibold">
+          <a href="#about"
+             class="inline-flex items-center justify-center px-5 py-2.5 rounded-full border border-white/70 hover:bg-white/10 text-sm sm:text-base font-semibold">
             Learn More
           </a>
         </div>
 
-        <div class="grid md:grid-cols-2 gap-6 text-left text-sm md:text-base mt-4">
-          <div class="bg-white/10 rounded-lg p-4">
-            <h3 class="font-semibold mb-2">Symbol</h3>
-            <p><span class="font-bold">🌳 Green Tree</span> – representing life, growth, ecological resilience, and sustainability.</p>
+        <div class="grid gap-4 md:grid-cols-2 text-left text-xs sm:text-sm bg-white/10 rounded-2xl p-4 md:p-6">
+          <div class="bg-white/5 rounded-xl p-4">
+            <h3 class="font-semibold mb-1 text-sm">Symbol</h3>
+            <p>
+              <span class="font-bold">🌳 Green Tree</span> — representing life, growth, ecological resilience,
+              and sustainability.
+            </p>
           </div>
-          <div class="bg-white/10 rounded-lg p-4">
-            <h3 class="font-semibold mb-2">Latest News & Events</h3>
-            <p>Highlight current projects, youth-led initiatives, retreats, tree planting campaigns, and upcoming eco-dialogues.</p>
+          <div class="bg-white/5 rounded-xl p-4">
+            <h3 class="font-semibold mb-1 text-sm">Highlights</h3>
+            <p>
+              Current projects include tree planting campaigns, youth eco-leadership, eco-tourism initiatives,
+              community trainings, and climate-justice dialogues across Africa.
+            </p>
           </div>
         </div>
       </div>
@@ -128,175 +144,183 @@
   </section>
 
   <!-- About / What We Are -->
-  <section id="about" class="container mx-auto px-6 py-16">
-    <h2 class="text-4xl font-bold mb-8 text-center">What We Are</h2>
-    <div class="grid md:grid-cols-2 gap-12 items-center">
-      <div>
-        <p class="text-lg mb-4">
-          Katsave Sustain Planet International (KASPI) is a nonprofit organization born from a long journey
-          of inspiration and reflection on the complex relationship between humans and nature. Its roots
-          trace back to the founder’s early childhood, shaped by a deep admiration for nature—the melodies
-          of birds, intricate designs of unique trees, bees, rocks, and hot springs—nurturing a profound
-          connection to the natural world.
-        </p>
-        <p class="text-lg mb-4">
-          This early bond was strengthened through academic and practical experience in environmental
-          studies in Uganda and Costa Rica, and further refined at the Wangari Maathai Institute for Peace
-          and Environmental Studies in Nairobi. Exposure to the Earth Charter and Pope Francis’s encyclical
-          <span class="italic">Laudato Si’</span> deepened KASPI’s commitment to ecological stewardship,
-          justice, and spiritual-ecological renewal.
-        </p>
-        <p class="text-lg mb-4">
-          KASPI was founded to tackle urgent environmental challenges such as deforestation, biodiversity
-          loss, climate change, and resource-driven poverty that threaten food security, health, and livelihoods
-          in vulnerable African communities. Through tree planting, community training, research, education,
-          and policy advocacy, KASPI promotes sustainable livelihoods, climate adaptation, and responsible
-          stewardship—striving to build resilient communities that live in harmony with nature.
-        </p>
-        <p class="text-lg">
-          We are guided by African indigenous wisdom, the Earth Charter, and <span class="italic">Laudato Si’</span>,
-          integrating environmental ethics, spirituality, and innovation into practical action for a sustainable planet.
-        </p>
-      </div>
-      <div class="space-y-6">
-        <img src="https://source.unsplash.com/600x400/?nature,forest" alt="Nature Conservation"
-             class="rounded-lg shadow-lg w-full object-cover">
-        <div class="bg-white rounded-lg shadow-md p-4 text-sm">
-          <h3 class="font-semibold mb-2">African Youth for a Sustainable Planet (AYSP)</h3>
+  <section id="about" class="py-16">
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+      <h2 class="text-3xl md:text-4xl font-bold text-center mb-10">What We Are</h2>
+      <div class="grid gap-10 md:grid-cols-2 items-start">
+        <div class="space-y-4 text-sm sm:text-base leading-relaxed">
           <p>
-            KASPI is home to <span class="font-semibold">African Youth for a Sustainable Planet (AYSP)</span>,
-            a youth-led network that empowers young Africans to become environmental stewards, climate actors,
-            and change-makers. Inspired by the publication
-            <span class="italic">“Earth Charter: A Beacon of African Youth for a Sustainable Planet”</span>,
-            AYSP highlights the role of youth in advancing sustainable development, ethical governance, and
-            climate action.
+            Katsave Sustain Planet International (KASPI) is a nonprofit organization born from a deep reflection
+            on the complex relationship between humans and nature. Its roots trace back to the founder’s early
+            childhood, shaped by admiration for the melodies of birds, the designs of unique trees, bees, rocks,
+            and hot springs.
           </p>
-          <p class="mt-2">
-            We also host other initiatives, including <span class="italic">Laudato Si’, Our Common Future</span>,
-            which serves as a guiding principle for ecological and spiritual renewal.
+          <p>
+            This early bond with nature was strengthened through environmental studies and practical work in
+            Uganda, Costa Rica, and at the Wangari Maathai Institute for Peace and Environmental Studies in Nairobi.
+            Exposure to the Earth Charter and Pope Francis’s encyclical <span class="italic">Laudato Si’</span>
+            further deepened the commitment to ecological stewardship, justice, and spiritual-ecological renewal.
+          </p>
+          <p>
+            KASPI was founded to tackle urgent challenges such as deforestation, biodiversity loss, climate change,
+            and resource-driven poverty that threaten food security, health, and livelihoods in vulnerable African
+            communities. Through tree planting, community training, research, education, and policy advocacy, KASPI
+            promotes sustainable livelihoods, climate adaptation, and responsible stewardship.
+          </p>
+          <p>
+            Guided by African indigenous wisdom, the Earth Charter, and <span class="italic">Laudato Si’</span>,
+            KASPI integrates environmental ethics, spirituality, and innovation into practical action for a sustainable,
+            just, and peaceful planet.
           </p>
         </div>
-      </div>
-    </div>
 
-    <!-- What KASPI stands for -->
-    <h3 class="text-3xl font-semibold mt-12 mb-6 text-center">What KASPI Stands For</h3>
-    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-6 text-sm md:text-base">
-      <div class="bg-white p-6 rounded-lg shadow-md hover:shadow-lg transition duration-300">
-        <p class="font-bold text-xl mb-2">K – Knowledge &amp; Innovation</p>
-        <p>Equip young people with eco-skills, sustainable ideas, and innovative solutions.</p>
+        <div class="space-y-6">
+          <img
+            src="https://images.unsplash.com/photo-1500530855697-b586d89ba3ee?auto=format&fit=crop&w=900&q=80"
+            alt="Nature and community"
+            class="rounded-2xl shadow-md w-full object-cover" />
+          <div class="bg-white rounded-2xl shadow p-4 sm:p-5 text-xs sm:text-sm">
+            <h3 class="font-semibold mb-2">African Youth for a Sustainable Planet (AYSP)</h3>
+            <p class="mb-2">
+              KASPI is home to <span class="font-semibold">African Youth for a Sustainable Planet (AYSP)</span>,
+              a youth-led network that empowers young Africans to become environmental stewards, climate actors,
+              and change-makers.
+            </p>
+            <p class="mb-2">
+              Inspired by the publication <span class="italic">“Earth Charter: A Beacon of African Youth for a
+              Sustainable Planet”</span>, AYSP highlights the critical role of youth in shaping sustainable
+              development, ethical governance, and climate action.
+            </p>
+            <p>
+              KASPI also hosts initiatives such as <span class="italic">Laudato Si’, Our Common Future</span>,
+              which serves as a guiding principle for ecological and spiritual renewal in all programs.
+            </p>
+          </div>
+        </div>
       </div>
-      <div class="bg-white p-6 rounded-lg shadow-md hover:shadow-lg transition duration-300">
-        <p class="font-bold text-xl mb-2">A – Awareness &amp; Action</p>
-        <p>Inspire ecological and spiritual care, translating awareness into concrete action.</p>
-      </div>
-      <div class="bg-white p-6 rounded-lg shadow-md hover:shadow-lg transition duration-300">
-        <p class="font-bold text-xl mb-2">S – Sustainability &amp; Solutions</p>
-        <p>Promote lasting, practical environmental and socio-economic solutions.</p>
-      </div>
-      <div class="bg-white p-6 rounded-lg shadow-md hover:shadow-lg transition duration-300">
-        <p class="font-bold text-xl mb-2">P – Planet, Partnerships &amp; Participation</p>
-        <p>Protect the Earth together through collaboration, shared responsibility, and inclusive engagement.</p>
-      </div>
-      <div class="bg-white p-6 rounded-lg shadow-md hover:shadow-lg transition duration-300">
-        <p class="font-bold text-xl mb-2">I – Inclusion &amp; Integrity</p>
-        <p>Embrace diversity and uphold ethical stewardship, transparency, and accountability.</p>
+
+      <!-- What KASPI Stands For -->
+      <h3 class="text-2xl md:text-3xl font-semibold text-center mt-14 mb-8">What KASPI Stands For</h3>
+      <div class="grid gap-5 md:grid-cols-5 text-xs sm:text-sm">
+        <div class="bg-white rounded-2xl shadow p-4">
+          <p class="font-bold text-lg mb-1">K – Knowledge &amp; Innovation</p>
+          <p>Equip young people with eco-skills, sustainable ideas, and innovative solutions.</p>
+        </div>
+        <div class="bg-white rounded-2xl shadow p-4">
+          <p class="font-bold text-lg mb-1">A – Awareness &amp; Action</p>
+          <p>Inspire ecological and spiritual care, turning awareness into concrete action.</p>
+        </div>
+        <div class="bg-white rounded-2xl shadow p-4">
+          <p class="font-bold text-lg mb-1">S – Sustainability &amp; Solutions</p>
+          <p>Promote lasting, practical environmental and socio-economic solutions.</p>
+        </div>
+        <div class="bg-white rounded-2xl shadow p-4">
+          <p class="font-bold text-lg mb-1">P – Planet, Partnerships &amp; Participation</p>
+          <p>Protect the Earth together through collaboration and inclusive engagement.</p>
+        </div>
+        <div class="bg-white rounded-2xl shadow p-4">
+          <p class="font-bold text-lg mb-1">I – Inclusion &amp; Integrity</p>
+          <p>Embrace diversity and uphold ethical stewardship, transparency, and accountability.</p>
+        </div>
       </div>
     </div>
   </section>
 
-  <!-- Vision & Mission Section -->
-  <section id="mission" class="bg-gradient-to-r from-teal-100 to-green-100 py-16">
-    <div class="container mx-auto px-6">
-      <h2 class="text-4xl font-bold mb-12 text-center">Vision &amp; Mission</h2>
-      <div class="grid md:grid-cols-2 gap-12">
-        <div class="bg-white p-6 rounded-lg shadow-md">
-          <h3 class="text-2xl font-semibold mb-4">Vision</h3>
-          <p class="text-lg">
-            A restored and resilient planet where humanity lives in harmony with nature, guided by
-            shared values, innovation, and spiritual renewal, achieving sustainability and equity.
+  <!-- Vision & Mission -->
+  <section id="mission" class="bg-emerald-50 py-16">
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+      <h2 class="text-3xl md:text-4xl font-bold text-center mb-10">Vision &amp; Mission</h2>
+      <div class="grid gap-8 md:grid-cols-2">
+        <div class="bg-white rounded-2xl shadow p-6">
+          <h3 class="text-xl font-semibold mb-3">Vision</h3>
+          <p class="text-sm sm:text-base leading-relaxed">
+            A restored and resilient planet where humanity lives in harmony with nature, guided by shared
+            values, innovation, and spiritual renewal, achieving sustainability and equity.
           </p>
         </div>
-        <div class="bg-white p-6 rounded-lg shadow-md">
-          <h3 class="text-2xl font-semibold mb-4">Mission</h3>
-          <p class="text-lg">
-            To enhance global wisdom and drive transformative action, building a united and sustainable
-            planet starting from Africa, guided by the Earth Charter and <span class="italic">Laudato Si’</span>,
-            and inspired by ethical and ecological leadership.
+        <div class="bg-white rounded-2xl shadow p-6">
+          <h3 class="text-xl font-semibold mb-3">Mission</h3>
+          <p class="text-sm sm:text-base leading-relaxed">
+            To enhance global wisdom and drive transformative action, building a united and sustainable planet
+            starting from Africa, guided by the Earth Charter and <span class="italic">Laudato Si’</span>, and
+            inspired by ethical and ecological leadership.
           </p>
         </div>
       </div>
 
-      <h3 class="text-3xl font-semibold mt-12 mb-6 text-center">Core Values</h3>
-      <div class="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-5 gap-4 text-sm md:text-base">
-        <span class="bg-white p-3 rounded-lg shadow-md text-center">Stewardship</span>
-        <span class="bg-white p-3 rounded-lg shadow-md text-center">Innovation</span>
-        <span class="bg-white p-3 rounded-lg shadow-md text-center">Empowerment</span>
-        <span class="bg-white p-3 rounded-lg shadow-md text-center">Collaboration</span>
-        <span class="bg-white p-3 rounded-lg shadow-md text-center">Integrity</span>
-        <span class="bg-white p-3 rounded-lg shadow-md text-center">Spirituality &amp; Eco-spirituality</span>
-        <span class="bg-white p-3 rounded-lg shadow-md text-center">Sustainability</span>
-        <span class="bg-white p-3 rounded-lg shadow-md text-center">Indigenous Wisdom</span>
-        <span class="bg-white p-3 rounded-lg shadow-md text-center">Earth Charter Values</span>
-        <span class="bg-white p-3 rounded-lg shadow-md text-center">Accountability</span>
+      <!-- Core Values -->
+      <h3 class="text-2xl md:text-3xl font-semibold text-center mt-12 mb-6">Core Values</h3>
+      <div class="grid gap-3 sm:gap-4 grid-cols-2 md:grid-cols-4 lg:grid-cols-5 text-xs sm:text-sm">
+        <span class="bg-white rounded-full shadow px-4 py-2 text-center">Stewardship</span>
+        <span class="bg-white rounded-full shadow px-4 py-2 text-center">Innovation</span>
+        <span class="bg-white rounded-full shadow px-4 py-2 text-center">Empowerment</span>
+        <span class="bg-white rounded-full shadow px-4 py-2 text-center">Collaboration</span>
+        <span class="bg-white rounded-full shadow px-4 py-2 text-center">Integrity</span>
+        <span class="bg-white rounded-full shadow px-4 py-2 text-center">Spirituality &amp; Eco-spirituality</span>
+        <span class="bg-white rounded-full shadow px-4 py-2 text-center">Sustainability</span>
+        <span class="bg-white rounded-full shadow px-4 py-2 text-center">Indigenous Wisdom</span>
+        <span class="bg-white rounded-full shadow px-4 py-2 text-center">Earth Charter Values</span>
+        <span class="bg-white rounded-full shadow px-4 py-2 text-center">Accountability</span>
       </div>
     </div>
   </section>
 
-  <!-- Philosophy Section -->
-  <section id="philosophy" class="container mx-auto px-6 py-16">
-    <h2 class="text-4xl font-bold mb-8 text-center">Our Philosophy</h2>
-    <div class="max-w-4xl mx-auto bg-white rounded-lg shadow-md p-6 md:p-8 text-lg leading-relaxed">
-      <p class="mb-4">
-        KASPI believes that humanity and nature are inseparable partners in sustaining life on Earth.
-        Our philosophy is rooted in the understanding that environmental stewardship, social equity,
-        and spiritual-ecological consciousness are fundamental to a thriving and resilient planet.
-      </p>
-      <p class="mb-4">
-        Guided by African indigenous wisdom, the Earth Charter, and <span class="italic">Laudato Si’</span>,
-        we affirm that sustainable development is achieved not only through innovation and technology,
-        but also through education, ethical leadership, community empowerment, and respect for nature.
-      </p>
-      <p>
-        We believe that every human being—especially youth and women—has a vital role to play in preserving
-        ecological balance, promoting justice, and fostering a harmonious coexistence with the Earth. This
-        philosophy inspires transformative action, resilience, and creativity to meet present and future
-        environmental, social, and economic challenges—starting from Africa and extending globally.
-      </p>
+  <!-- Philosophy -->
+  <section id="philosophy" class="py-16">
+    <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
+      <h2 class="text-3xl md:text-4xl font-bold text-center mb-10">Our Philosophy</h2>
+      <div class="bg-white rounded-2xl shadow p-6 sm:p-8 text-sm sm:text-base leading-relaxed space-y-4">
+        <p>
+          KASPI believes that humanity and nature are inseparable partners in sustaining life on Earth.
+          Environmental stewardship, social equity, and spiritual-ecological consciousness are fundamental
+          to a thriving and resilient planet.
+        </p>
+        <p>
+          Guided by African indigenous wisdom, the Earth Charter, and <span class="italic">Laudato Si’</span>,
+          KASPI affirms that sustainable development is achieved not only through innovation and technology,
+          but also through education, ethical leadership, community empowerment, and deep respect for nature.
+        </p>
+        <p>
+          Every human being—especially youth and women—has a role to play in preserving ecological balance,
+          promoting justice, and fostering a harmonious coexistence with the Earth. This philosophy inspires
+          transformative action, resilience, and creativity in response to current and future environmental,
+          social, and economic challenges.
+        </p>
+      </div>
     </div>
   </section>
 
   <!-- Situational Analysis -->
   <section id="situational-analysis" class="bg-white py-16">
-    <div class="container mx-auto px-6">
-      <h2 class="text-4xl font-bold mb-10 text-center">Situational Analysis</h2>
-      <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-6 text-sm md:text-base">
-        <div class="bg-gray-50 border rounded-lg p-5 shadow-sm">
-          <h3 class="font-semibold text-lg mb-3">Environmental Challenges</h3>
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+      <h2 class="text-3xl md:text-4xl font-bold text-center mb-10">Situational Analysis</h2>
+      <div class="grid gap-6 md:grid-cols-2 lg:grid-cols-4 text-xs sm:text-sm">
+        <div class="bg-gray-50 rounded-2xl border border-gray-100 shadow-sm p-5">
+          <h3 class="font-semibold text-base mb-2">Environmental Challenges</h3>
           <ul class="list-disc pl-5 space-y-1">
             <li>Deforestation, soil erosion, and biodiversity loss.</li>
-            <li>Climate change impacts: floods, droughts, erratic rainfall, and heat extremes.</li>
+            <li>Climate change impacts: floods, droughts, erratic rainfall, and temperature extremes.</li>
             <li>Pollution from industrial, agricultural, and domestic sources.</li>
           </ul>
         </div>
-        <div class="bg-gray-50 border rounded-lg p-5 shadow-sm">
-          <h3 class="font-semibold text-lg mb-3">Social &amp; Economic Challenges</h3>
+        <div class="bg-gray-50 rounded-2xl border border-gray-100 shadow-sm p-5">
+          <h3 class="font-semibold text-base mb-2">Social &amp; Economic Challenges</h3>
           <ul class="list-disc pl-5 space-y-1">
             <li>Poverty driving unsustainable resource use and environmental degradation.</li>
             <li>Conflicts over land, water, forests, and natural resources.</li>
             <li>Limited access to education, technology, and sustainable livelihoods.</li>
           </ul>
         </div>
-        <div class="bg-gray-50 border rounded-lg p-5 shadow-sm">
-          <h3 class="font-semibold text-lg mb-3">Organizational Strengths</h3>
+        <div class="bg-gray-50 rounded-2xl border border-gray-100 shadow-sm p-5">
+          <h3 class="font-semibold text-base mb-2">Organizational Strengths</h3>
           <ul class="list-disc pl-5 space-y-1">
             <li>Strong African youth network (AYSP) and community partnerships.</li>
             <li>Expertise in environmental studies, agroforestry, regenerative agriculture, and eco-tourism.</li>
             <li>Guidance from African wisdom, the Earth Charter, and <span class="italic">Laudato Si’</span>.</li>
           </ul>
         </div>
-        <div class="bg-gray-50 border rounded-lg p-5 shadow-sm">
-          <h3 class="font-semibold text-lg mb-3">Opportunities</h3>
+        <div class="bg-gray-50 rounded-2xl border border-gray-100 shadow-sm p-5">
+          <h3 class="font-semibold text-base mb-2">Opportunities</h3>
           <ul class="list-disc pl-5 space-y-1">
             <li>Growing global focus on climate action and sustainability.</li>
             <li>Potential for international collaborations, research, and funding.</li>
@@ -307,229 +331,240 @@
     </div>
   </section>
 
-  <!-- Core Objectives & Activities (What We Do) -->
-  <section id="activities" class="container mx-auto px-6 py-16">
-    <h2 class="text-4xl font-bold mb-12 text-center">Core Objectives &amp; What We Do</h2>
+  <!-- Core Objectives & What We Do -->
+  <section id="activities" class="py-16">
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+      <h2 class="text-3xl md:text-4xl font-bold text-center mb-10">Core Objectives &amp; What We Do</h2>
 
-    <div class="grid md:grid-cols-2 lg:grid-cols-2 gap-8 mb-10">
-      <!-- Objective 1 -->
-      <div class="bg-white p-6 rounded-lg shadow-md hover:shadow-lg transition duration-300 flex flex-col">
-        <h3 class="text-2xl font-semibold mb-2">1. Nature Conservation, Sustainable Agriculture &amp; Agroforestry</h3>
-        <p class="mb-3 text-sm text-gray-600">Conserve nature and enhance food security.</p>
-        <ul class="list-disc pl-5 space-y-2 text-sm md:text-base flex-1">
-          <li>Conserve and protect nature for planetary sustainability.</li>
-          <li>Promote agroforestry and enhance food security in rural and peri-urban communities.</li>
-          <li>Advance regenerative agriculture practices, including soil restoration and climate-smart farming.</li>
-          <li>Reduce household poverty through sustainable agricultural practices and eco-enterprises.</li>
-        </ul>
+      <div class="grid gap-8 md:grid-cols-2 text-sm sm:text-base mb-12">
+        <!-- Objective 1 -->
+        <div class="bg-white rounded-2xl shadow p-6 flex flex-col">
+          <h3 class="text-xl font-semibold mb-2">
+            1. Nature Conservation, Sustainable Agriculture &amp; Agroforestry
+          </h3>
+          <p class="text-gray-600 mb-3">
+            Conserve nature, restore ecosystems, and strengthen food security.
+          </p>
+          <ul class="list-disc pl-5 space-y-1.5 flex-1">
+            <li>Conserve and protect nature for planetary sustainability.</li>
+            <li>Promote agroforestry systems in rural and peri-urban communities.</li>
+            <li>Advance regenerative agriculture and climate-smart farming practices.</li>
+            <li>Reduce household poverty through sustainable agricultural practices and eco-enterprises.</li>
+          </ul>
+        </div>
+
+        <!-- Objective 2 -->
+        <div class="bg-white rounded-2xl shadow p-6 flex flex-col">
+          <h3 class="text-xl font-semibold mb-2">
+            2. Agro-Coffee Tourism, Eco-Tourism &amp; Cultural-Spiritual Integration
+          </h3>
+          <p class="text-gray-600 mb-3">
+            Link livelihoods, culture, and conservation through tourism.
+          </p>
+          <ul class="list-disc pl-5 space-y-1.5 flex-1">
+            <li>Advance coffee and agro-tourism initiatives that showcase sustainable livelihoods.</li>
+            <li>Promote spiritual and eco-tourism experiences rooted in ecological ethics.</li>
+            <li>Develop ecotourism enterprises that support communities while conserving nature.</li>
+          </ul>
+        </div>
+
+        <!-- Objective 3 -->
+        <div class="bg-white rounded-2xl shadow p-6 flex flex-col">
+          <h3 class="text-xl font-semibold mb-2">
+            3. Community Empowerment, Youth/Women Leadership &amp; Alternative Livelihoods
+          </h3>
+          <p class="text-gray-600 mb-3">
+            Build leadership, dignity, and resilience in communities.
+          </p>
+          <ul class="list-disc pl-5 space-y-1.5 flex-1">
+            <li>Empower youth and women to lead environmental and climate initiatives.</li>
+            <li>Promote alternative eco-based livelihoods and small-scale enterprises.</li>
+            <li>Foster partnerships and collaborations for greater community impact.</li>
+          </ul>
+        </div>
+
+        <!-- Objective 4 -->
+        <div class="bg-white rounded-2xl shadow p-6 flex flex-col">
+          <h3 class="text-xl font-semibold mb-2">
+            4. Climate Action, Research, Advocacy &amp; Ethical-Spiritual Integration
+          </h3>
+          <p class="text-gray-600 mb-3">
+            Advance climate justice, ethical governance, and ecological wisdom.
+          </p>
+          <ul class="list-disc pl-5 space-y-1.5 flex-1">
+            <li>Conduct environmental research, impact assessments, and knowledge documentation.</li>
+            <li>Support climate change adaptation, mitigation, and disaster preparedness.</li>
+            <li>Promote peace, justice, and equity for a sustainable planet.</li>
+            <li>Implement <span class="italic">Laudato Si’</span> principles and Earth Charter values across programs.</li>
+          </ul>
+        </div>
       </div>
 
-      <!-- Objective 2 -->
-      <div class="bg-white p-6 rounded-lg shadow-md hover:shadow-lg transition duration-300 flex flex-col">
-        <h3 class="text-2xl font-semibold mb-2">2. Agro-Coffee Tourism, Eco-Tourism &amp; Cultural-Spiritual Integration</h3>
-        <p class="mb-3 text-sm text-gray-600">Link livelihoods, culture, and conservation.</p>
-        <ul class="list-disc pl-5 space-y-2 text-sm md:text-base flex-1">
-          <li>Advance coffee and agro-tourism initiatives to showcase sustainable livelihoods.</li>
-          <li>Promote spiritual and eco-tourism experiences rooted in ecological ethics.</li>
-          <li>Develop ecotourism and tourism enterprises that benefit local communities while conserving nature.</li>
-        </ul>
-      </div>
-
-      <!-- Objective 3 -->
-      <div class="bg-white p-6 rounded-lg shadow-md hover:shadow-lg transition duration-300 flex flex-col">
-        <h3 class="text-2xl font-semibold mb-2">3. Community Empowerment, Youth/Women Leadership &amp; Alternative Livelihoods</h3>
-        <p class="mb-3 text-sm text-gray-600">Build leadership and resilience.</p>
-        <ul class="list-disc pl-5 space-y-2 text-sm md:text-base flex-1">
-          <li>Empower youth and women to lead environmental and climate initiatives.</li>
-          <li>Promote alternative eco-based livelihoods and small-scale enterprises.</li>
-          <li>Foster partnerships and collaborations for greater community impact.</li>
-        </ul>
-      </div>
-
-      <!-- Objective 4 -->
-      <div class="bg-white p-6 rounded-lg shadow-md hover:shadow-lg transition duration-300 flex flex-col">
-        <h3 class="text-2xl font-semibold mb-2">4. Climate Action, Research, Advocacy &amp; Ethical-Spiritual Integration</h3>
-        <p class="mb-3 text-sm text-gray-600">Advance climate justice and ecological ethics.</p>
-        <ul class="list-disc pl-5 space-y-2 text-sm md:text-base flex-1">
-          <li>Conduct environmental research, impact assessments, and knowledge documentation.</li>
-          <li>Support climate change adaptation, mitigation, and disaster preparedness.</li>
-          <li>Promote peace, justice, and equity for a sustainable planet.</li>
-          <li>Implement <span class="italic">Laudato Si’</span> principles and Earth Charter values in all initiatives.</li>
-        </ul>
-      </div>
-    </div>
-
-    <!-- Key Programs & Activities (from Strategic Plan) -->
-    <h3 class="text-3xl font-semibold mb-8 text-center">Key Programs &amp; Activities</h3>
-    <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8 text-sm md:text-base">
-      <!-- Environmental Conservation & Climate Action -->
-      <div class="bg-white p-6 rounded-lg shadow-md hover:shadow-lg transition duration-300">
-        <h4 class="text-xl font-semibold mb-3">Environmental Conservation &amp; Climate Action</h4>
-        <ul class="list-disc pl-5 space-y-2">
-          <li>Plant 20,000 trees annually and establish 5 community green spaces. 🌳</li>
-          <li>Develop native species nurseries and restore degraded ecosystems.</li>
-          <li>Conduct Environmental Impact Assessments (EIAs) and Strategic Environmental Assessments (SEAs).</li>
-        </ul>
-      </div>
-
-      <!-- Sustainable Agriculture & Food Security -->
-      <div class="bg-white p-6 rounded-lg shadow-md hover:shadow-lg transition duration-300">
-        <h4 class="text-xl font-semibold mb-3">Sustainable Agriculture &amp; Food Security</h4>
-        <ul class="list-disc pl-5 space-y-2">
-          <li>Distribute 20,000 agroforestry tree seedlings per year.</li>
-          <li>Run 12 farmer field schools and demonstration gardens annually.</li>
-          <li>Promote regenerative agriculture, soil health, and climate-resilient crops.</li>
-        </ul>
-      </div>
-
-      <!-- Youth & Women Empowerment -->
-      <div class="bg-white p-6 rounded-lg shadow-md hover:shadow-lg transition duration-300">
-        <h4 class="text-xl font-semibold mb-3">Youth &amp; Women Empowerment (AYSP)</h4>
-        <ul class="list-disc pl-5 space-y-2">
-          <li>Train 300 youth and women per year in eco-leadership and sustainable practices.</li>
-          <li>Facilitate mentorship programs and youth-led eco-ventures.</li>
-          <li>Build eco-ambassador networks for local and regional impact.</li>
-        </ul>
-      </div>
-
-      <!-- Spiritual & Eco-Tourism Engagement -->
-      <div class="bg-white p-6 rounded-lg shadow-md hover:shadow-lg transition duration-300">
-        <h4 class="text-xl font-semibold mb-3">Spiritual &amp; Eco-Tourism Engagement</h4>
-        <ul class="list-disc pl-5 space-y-2">
-          <li>Organize 6 retreats and 12 guided nature walks annually.</li>
-          <li>Integrate environmental ethics and spiritual reflection into activities.</li>
-          <li>Promote cultural-spiritual experiences rooted in care for creation.</li>
-        </ul>
-      </div>
-
-      <!-- Eco-Innovation & Technology -->
-      <div class="bg-white p-6 rounded-lg shadow-md hover:shadow-lg transition duration-300">
-        <h4 class="text-xl font-semibold mb-3">Eco-Innovation &amp; Technology</h4>
-        <ul class="list-disc pl-5 space-y-2">
-          <li>Introduce solar dryers, efficient cookstoves, and biochar systems to 100 households annually.</li>
-          <li>Host eco-innovation expos and hackathons.</li>
-          <li>Leverage ICT and smart technologies for environmental monitoring and education.</li>
-        </ul>
-      </div>
-
-      <!-- Climate Resilience & Alternative Livelihoods -->
-      <div class="bg-white p-6 rounded-lg shadow-md hover:shadow-lg transition duration-300">
-        <h4 class="text-xl font-semibold mb-3">Climate Resilience &amp; Alternative Livelihoods</h4>
-        <ul class="list-disc pl-5 space-y-2">
-          <li>Train communities in resilience planning, drought-tolerant crops, and water harvesting.</li>
-          <li>Support beekeeping, bamboo crafts, coffee tourism, and eco-tourism services.</li>
-          <li>Promote eco-enterprises and cooperative development.</li>
-        </ul>
-      </div>
-
-      <!-- Research, Advocacy & Knowledge Sharing -->
-      <div class="bg-white p-6 rounded-lg shadow-md hover:shadow-lg transition duration-300">
-        <h4 class="text-xl font-semibold mb-3">Research, Advocacy &amp; Knowledge Sharing</h4>
-        <ul class="list-disc pl-5 space-y-2">
-          <li>Conduct at least 5 environmental studies per year and document lessons learned.</li>
-          <li>Organize ecological justice dialogues and policy advocacy forums.</li>
-          <li>Produce publications, briefs, and multimedia content for learning and influence.</li>
-        </ul>
+      <!-- Key Programs & Activities -->
+      <h3 class="text-2xl md:text-3xl font-semibold text-center mb-8">Key Programs &amp; Activities</h3>
+      <div class="grid gap-8 md:grid-cols-2 lg:grid-cols-3 text-xs sm:text-sm">
+        <div class="bg-white rounded-2xl shadow p-5">
+          <h4 class="text-lg font-semibold mb-2">Environmental Conservation &amp; Climate Action</h4>
+          <ul class="list-disc pl-5 space-y-1">
+            <li>Plant 20,000 trees annually and establish 5 community green spaces. 🌳</li>
+            <li>Develop native species nurseries and restore degraded ecosystems.</li>
+            <li>Conduct Environmental Impact Assessments (EIAs) and Strategic Environmental Assessments (SEAs).</li>
+          </ul>
+        </div>
+        <div class="bg-white rounded-2xl shadow p-5">
+          <h4 class="text-lg font-semibold mb-2">Sustainable Agriculture &amp; Food Security</h4>
+          <ul class="list-disc pl-5 space-y-1">
+            <li>Distribute 20,000 agroforestry tree seedlings per year.</li>
+            <li>Run 12 farmer field schools and demonstration gardens annually.</li>
+            <li>Promote regenerative agriculture, soil health, and climate-resilient crops.</li>
+          </ul>
+        </div>
+        <div class="bg-white rounded-2xl shadow p-5">
+          <h4 class="text-lg font-semibold mb-2">Youth &amp; Women Empowerment (AYSP)</h4>
+          <ul class="list-disc pl-5 space-y-1">
+            <li>Train 300 youth and women per year in eco-leadership and sustainable practices.</li>
+            <li>Facilitate mentorship programs and youth-led eco-ventures.</li>
+            <li>Build eco-ambassador networks for local and regional impact.</li>
+          </ul>
+        </div>
+        <div class="bg-white rounded-2xl shadow p-5">
+          <h4 class="text-lg font-semibold mb-2">Spiritual &amp; Eco-Tourism Engagement</h4>
+          <ul class="list-disc pl-5 space-y-1">
+            <li>Organize 6 retreats and 12 guided nature walks annually.</li>
+            <li>Integrate environmental ethics and spiritual reflection into community activities.</li>
+            <li>Promote cultural-spiritual experiences rooted in care for creation.</li>
+          </ul>
+        </div>
+        <div class="bg-white rounded-2xl shadow p-5">
+          <h4 class="text-lg font-semibold mb-2">Eco-Innovation &amp; Technology</h4>
+          <ul class="list-disc pl-5 space-y-1">
+            <li>Introduce solar dryers, efficient cookstoves, and biochar systems to 100 households annually.</li>
+            <li>Host eco-innovation expos and hackathons.</li>
+            <li>Leverage digital tools and smart technologies for environmental monitoring and education.</li>
+          </ul>
+        </div>
+        <div class="bg-white rounded-2xl shadow p-5">
+          <h4 class="text-lg font-semibold mb-2">Climate Resilience &amp; Alternative Livelihoods</h4>
+          <ul class="list-disc pl-5 space-y-1">
+            <li>Train communities in resilience planning, drought-tolerant crops, and water harvesting.</li>
+            <li>Support beekeeping, bamboo crafts, coffee tourism, and eco-tourism services.</li>
+            <li>Promote eco-enterprises and cooperative development.</li>
+          </ul>
+        </div>
+        <div class="bg-white rounded-2xl shadow p-5 md:col-span-2 lg:col-span-3">
+          <h4 class="text-lg font-semibold mb-2">Research, Advocacy &amp; Knowledge Sharing</h4>
+          <ul class="list-disc pl-5 space-y-1">
+            <li>Conduct at least 5 environmental studies per year and document lessons learned.</li>
+            <li>Organize ecological justice dialogues and policy advocacy forums.</li>
+            <li>Produce publications, briefs, and multimedia content to inform policy and practice.</li>
+          </ul>
+        </div>
       </div>
     </div>
   </section>
 
   <!-- Research Section -->
-  <section id="research" class="container mx-auto px-6 py-16">
-    <h2 class="text-4xl font-bold mb-12 text-center">Research</h2>
+  <section id="research" class="bg-emerald-50 py-16">
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+      <h2 class="text-3xl md:text-4xl font-bold text-center mb-10">Research</h2>
+      <p class="max-w-3xl mx-auto text-center text-sm sm:text-base mb-10">
+        KASPI’s research agenda connects climate justice, indigenous wisdom, eco-innovation, and community
+        resilience. Key focus areas include:
+      </p>
 
-    <div class="space-y-10">
+      <div class="space-y-6 text-xs sm:text-sm">
+        <div class="bg-white rounded-2xl shadow p-5">
+          <h3 class="text-lg font-semibold mb-2">Climate Justice, Governance &amp; Smart Climate Technology</h3>
+          <ul class="list-disc pl-5 space-y-1">
+            <li>Promote fair, ethical, community-driven environmental policies and governance frameworks.</li>
+            <li>Leverage technology for innovative climate solutions, monitoring, and early warning systems.</li>
+          </ul>
+        </div>
 
-      <div class="bg-white p-6 rounded-lg shadow-md">
-        <h3 class="text-2xl font-semibold mb-4">Climate Justice, Governance &amp; Smart Climate Technology</h3>
-        <ul class="list-disc pl-6 space-y-2 text-sm md:text-base">
-          <li>Promote fair, ethical, community-driven environmental policies and governance frameworks.</li>
-          <li>Leverage technology for innovative climate solutions, monitoring, and early warning systems.</li>
-        </ul>
-      </div>
+        <div class="bg-white rounded-2xl shadow p-5">
+          <h3 class="text-lg font-semibold mb-2">
+            Agroforestry, Sustainable &amp; Smart Agriculture, and Ecotourism
+          </h3>
+          <ul class="list-disc pl-5 space-y-1">
+            <li>Enhance food security, livelihoods, and environmental awareness.</li>
+            <li>Apply regenerative, climate-smart, and technology-driven farming practices.</li>
+            <li>Integrate ecotourism for conservation, culture, and community benefit.</li>
+          </ul>
+        </div>
 
-      <div class="bg-white p-6 rounded-lg shadow-md">
-        <h3 class="text-2xl font-semibold mb-4">Agroforestry, Sustainable &amp; Smart Agriculture, and Ecotourism</h3>
-        <ul class="list-disc pl-6 space-y-2 text-sm md:text-base">
-          <li>Enhance food security, livelihoods, and environmental awareness.</li>
-          <li>Apply regenerative, climate-smart, and technology-driven farming practices.</li>
-          <li>Integrate ecotourism for conservation, culture, and community benefit.</li>
-        </ul>
-      </div>
+        <div class="bg-white rounded-2xl shadow p-5">
+          <h3 class="text-lg font-semibold mb-2">Youth Ecological Education</h3>
+          <ul class="list-disc pl-5 space-y-1">
+            <li>Foster ecological consciousness, innovation, and environmental leadership among young people.</li>
+            <li>Support youth-led research, campaigns, and innovation labs.</li>
+          </ul>
+        </div>
 
-      <div class="bg-white p-6 rounded-lg shadow-md">
-        <h3 class="text-2xl font-semibold mb-4">Youth Ecological Education</h3>
-        <ul class="list-disc pl-6 space-y-2 text-sm md:text-base">
-          <li>Foster ecological consciousness, innovation, and environmental leadership among young people.</li>
-          <li>Develop youth-led research, campaigns, and innovation labs.</li>
-        </ul>
-      </div>
+        <div class="bg-white rounded-2xl shadow p-5">
+          <h3 class="text-lg font-semibold mb-2">African Indigenous Knowledge &amp; Ecospirituality</h3>
+          <ul class="list-disc pl-5 space-y-1">
+            <li>Integrate traditional wisdom and spiritual perspectives into environmental stewardship.</li>
+            <li>Document indigenous ecological practices that foster harmony with nature.</li>
+          </ul>
+        </div>
 
-      <div class="bg-white p-6 rounded-lg shadow-md">
-        <h3 class="text-2xl font-semibold mb-4">African Indigenous Knowledge &amp; Ecospirituality</h3>
-        <ul class="list-disc pl-6 space-y-2 text-sm md:text-base">
-          <li>Integrate traditional wisdom and spiritual perspectives into environmental stewardship.</li>
-          <li>Document and promote indigenous ecological practices that foster harmony with nature.</li>
-        </ul>
-      </div>
+        <div class="bg-white rounded-2xl shadow p-5">
+          <h3 class="text-lg font-semibold mb-2">Climate Change &amp; Community Resilience</h3>
+          <ul class="list-disc pl-5 space-y-1">
+            <li>Assess community vulnerability, adaptation strategies, and resilience pathways.</li>
+            <li>Promote sustainable rural livelihoods and inclusive climate-resilient planning.</li>
+          </ul>
+        </div>
 
-      <div class="bg-white p-6 rounded-lg shadow-md">
-        <h3 class="text-2xl font-semibold mb-4">Climate Change &amp; Community Resilience</h3>
-        <ul class="list-disc pl-6 space-y-2 text-sm md:text-base">
-          <li>Assess community vulnerability, adaptation strategies, and resilience pathways.</li>
-          <li>Promote sustainable rural livelihoods and adaptive planning under changing climate conditions.</li>
-        </ul>
-      </div>
+        <div class="bg-white rounded-2xl shadow p-5">
+          <h3 class="text-lg font-semibold mb-2">Biodiversity &amp; Ecosystem Restoration</h3>
+          <ul class="list-disc pl-5 space-y-1">
+            <li>Conserve species and protect critical ecosystems.</li>
+            <li>Restore degraded landscapes and strengthen ecological connectivity.</li>
+          </ul>
+        </div>
 
-      <div class="bg-white p-6 rounded-lg shadow-md">
-        <h3 class="text-2xl font-semibold mb-4">Biodiversity &amp; Ecosystem Restoration</h3>
-        <ul class="list-disc pl-6 space-y-2 text-sm md:text-base">
-          <li>Conserve species and protect critical ecosystems.</li>
-          <li>Restore degraded landscapes and promote ecological health and connectivity.</li>
-        </ul>
-      </div>
+        <div class="bg-white rounded-2xl shadow p-5">
+          <h3 class="text-lg font-semibold mb-2">Disaster Preparedness &amp; Peacebuilding</h3>
+          <ul class="list-disc pl-5 space-y-1">
+            <li>Develop ethical and sustainable crisis response and disaster preparedness strategies.</li>
+            <li>Support social cohesion, conflict-sensitive programming, and community-based peacebuilding.</li>
+          </ul>
+        </div>
 
-      <div class="bg-white p-6 rounded-lg shadow-md">
-        <h3 class="text-2xl font-semibold mb-4">Disaster Preparedness &amp; Peacebuilding</h3>
-        <ul class="list-disc pl-6 space-y-2 text-sm md:text-base">
-          <li>Develop ethical and sustainable crisis response and disaster preparedness strategies.</li>
-          <li>Support social cohesion, conflict-sensitive programming, and community-based peacebuilding.</li>
-        </ul>
-      </div>
-
-      <div class="bg-white p-6 rounded-lg shadow-md">
-        <h3 class="text-2xl font-semibold mb-4">Earth Charter Implementation</h3>
-        <ul class="list-disc pl-6 space-y-2 text-sm md:text-base">
-          <li>Promote principles of ecological sustainability, social justice, and peace.</li>
-          <li>Integrate Earth Charter values into research, education, governance, and community initiatives.</li>
-        </ul>
+        <div class="bg-white rounded-2xl shadow p-5">
+          <h3 class="text-lg font-semibold mb-2">Earth Charter Implementation</h3>
+          <ul class="list-disc pl-5 space-y-1">
+            <li>Promote principles of ecological sustainability, social justice, and peace.</li>
+            <li>Integrate Earth Charter values into research, education, governance, and community initiatives.</li>
+          </ul>
+        </div>
       </div>
     </div>
   </section>
 
-  <!-- Strategic Plan Section -->
-  <section id="strategic-plan" class="bg-gradient-to-b from-emerald-50 to-green-100 py-16">
-    <div class="container mx-auto px-6">
-      <h2 class="text-4xl font-bold mb-10 text-center">Strategic Plan 2025–2035</h2>
+  <!-- Strategic Plan -->
+  <section id="strategic-plan" class="py-16">
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+      <h2 class="text-3xl md:text-4xl font-bold text-center mb-10">Strategic Plan 2025–2035</h2>
 
-      <div class="max-w-5xl mx-auto bg-white rounded-lg shadow-md p-6 md:p-8 mb-10">
-        <h3 class="text-2xl font-semibold mb-3">Overview</h3>
-        <p class="mb-4 text-lg">
-          KASPI’s Strategic Plan 2025–2035, under the Marshall Plan 2050, provides a holistic and ethical
-          framework to address urgent environmental, social, and economic challenges—starting from Africa
-          and extending globally. It integrates environmental conservation, youth and community empowerment,
-          sustainable agriculture, climate resilience, spiritual-ecological engagement, and eco-innovation.
+      <div class="bg-white rounded-2xl shadow p-6 sm:p-8 mb-10 text-sm sm:text-base leading-relaxed space-y-3 max-w-5xl mx-auto">
+        <h3 class="text-xl font-semibold mb-2">Overview</h3>
+        <p>
+          KASPI’s Strategic Plan 2025–2035, under the Marshall Plan 2050, offers a holistic and ethical framework
+          to address urgent environmental, social, and economic challenges. It integrates environmental conservation,
+          youth and community empowerment, sustainable agriculture, climate resilience, spiritual-ecological engagement,
+          and eco-innovation.
         </p>
         <p>
-          Through education, practical interventions, and strategic partnerships, KASPI envisions a resilient
-          planet where humanity lives in harmony with nature.
+          Through education, practical interventions, and strategic partnerships, KASPI envisions a resilient planet
+          where humanity lives in harmony with nature.
         </p>
       </div>
 
-      <!-- Strategic Objectives -->
-      <div class="max-w-5xl mx-auto bg-white rounded-lg shadow-md p-6 md:p-8 mb-10">
-        <h3 class="text-2xl font-semibold mb-4">Strategic Objectives</h3>
-        <ol class="list-decimal pl-6 space-y-2 text-sm md:text-base">
+      <div class="bg-white rounded-2xl shadow p-6 sm:p-8 mb-10 max-w-5xl mx-auto text-xs sm:text-sm">
+        <h3 class="text-xl font-semibold mb-3">Strategic Objectives</h3>
+        <ol class="list-decimal pl-5 space-y-1.5">
           <li>Conserve and protect nature through tree planting, ecosystem restoration, and green spaces.</li>
           <li>Promote sustainable agriculture, agroforestry, and food security.</li>
           <li>Advance regenerative agriculture and coffee tourism.</li>
@@ -545,10 +580,9 @@
         </ol>
       </div>
 
-      <!-- Strategies -->
-      <div class="max-w-5xl mx-auto bg-white rounded-lg shadow-md p-6 md:p-8 mb-10">
-        <h3 class="text-2xl font-semibold mb-4">Key Strategies</h3>
-        <ul class="list-disc pl-6 space-y-2 text-sm md:text-base">
+      <div class="bg-white rounded-2xl shadow p-6 sm:p-8 mb-10 max-w-5xl mx-auto text-xs sm:text-sm">
+        <h3 class="text-xl font-semibold mb-3">Key Strategies</h3>
+        <ul class="list-disc pl-5 space-y-1.5">
           <li>Integrate African indigenous knowledge and Earth Charter principles into education and practice.</li>
           <li>Engage youth and communities in practical, results-driven interventions.</li>
           <li>Foster multi-stakeholder partnerships with NGOs, faith-based organizations, universities, and governments.</li>
@@ -557,50 +591,48 @@
         </ul>
       </div>
 
-      <!-- Implementation & KPIs -->
-      <div class="grid md:grid-cols-2 gap-8 mb-10">
-        <div class="bg-white rounded-lg shadow-md p-6 md:p-8">
-          <h3 class="text-2xl font-semibold mb-4">Implementation &amp; Management</h3>
-          <ul class="list-disc pl-6 space-y-2 text-sm md:text-base">
-            <li>Dedicated program leads and project teams for each strategic pillar.</li>
+      <div class="grid gap-6 md:grid-cols-2 mb-10 text-xs sm:text-sm">
+        <div class="bg-white rounded-2xl shadow p-6 sm:p-8">
+          <h3 class="text-lg font-semibold mb-3">Implementation &amp; Management</h3>
+          <ul class="list-disc pl-5 space-y-1.5">
+            <li>Program leads and project teams for each strategic pillar.</li>
             <li>Annual and project-based work plans aligned with the 2025–2035 framework.</li>
             <li>Resources drawn from internal expertise, community volunteers, funding, and partnerships.</li>
-            <li>Adaptive management to respond to environmental changes and community feedback.</li>
+            <li>Adaptive management to respond to environmental change and community feedback.</li>
           </ul>
         </div>
-        <div class="bg-white rounded-lg shadow-md p-6 md:p-8">
-          <h3 class="text-2xl font-semibold mb-4">Performance Metrics / KPIs</h3>
-          <ul class="list-disc pl-6 space-y-2 text-sm md:text-base">
+        <div class="bg-white rounded-2xl shadow p-6 sm:p-8">
+          <h3 class="text-lg font-semibold mb-3">Performance Metrics / KPIs</h3>
+          <ul class="list-disc pl-5 space-y-1.5">
             <li>Number of trees planted, green spaces established, and nurseries developed. 🌳</li>
             <li>Number of youth and women trained, and eco-enterprises supported.</li>
             <li>Number of community workshops, retreats, and awareness campaigns conducted.</li>
-            <li>Adoption rates of sustainable practices and climate resilience initiatives.</li>
+            <li>Adoption of sustainable practices and climate resilience initiatives.</li>
             <li>Research outputs, policy recommendations, and partnership agreements.</li>
           </ul>
         </div>
       </div>
 
-      <!-- Risks, Partnerships, Budget & Review -->
-      <div class="grid md:grid-cols-3 gap-8">
-        <div class="bg-white rounded-lg shadow-md p-6 md:p-8 text-sm md:text-base">
-          <h3 class="text-xl font-semibold mb-3">Risk Assessment &amp; Mitigation</h3>
-          <ul class="list-disc pl-6 space-y-2">
+      <div class="grid gap-6 md:grid-cols-3 text-xs sm:text-sm">
+        <div class="bg-white rounded-2xl shadow p-6 sm:p-8">
+          <h3 class="text-lg font-semibold mb-2">Risk Assessment &amp; Mitigation</h3>
+          <ul class="list-disc pl-5 space-y-1.5">
             <li>Climate disasters: early warning systems, disaster drills, resilient planting strategies.</li>
-            <li>Funding shortfalls: diversified fundraising, grants, eco-enterprise revenue.</li>
-            <li>Low community engagement: participatory planning, local leadership, cultural integration.</li>
+            <li>Funding shortfalls: diversified fundraising, grants, and eco-enterprise revenue.</li>
+            <li>Low community engagement: participatory planning, local leadership, and cultural integration.</li>
           </ul>
         </div>
-        <div class="bg-white rounded-lg shadow-md p-6 md:p-8 text-sm md:text-base">
-          <h3 class="text-xl font-semibold mb-3">Partnerships &amp; Stakeholders</h3>
-          <ul class="list-disc pl-6 space-y-2">
+        <div class="bg-white rounded-2xl shadow p-6 sm:p-8">
+          <h3 class="text-lg font-semibold mb-2">Partnerships &amp; Stakeholders</h3>
+          <ul class="list-disc pl-5 space-y-1.5">
             <li>Collaborate with youth networks, universities, NGOs, and faith-based organizations.</li>
             <li>Engage governments and international sustainability organizations.</li>
             <li>Establish eco-ambassador networks and host stakeholder forums and joint campaigns.</li>
           </ul>
         </div>
-        <div class="bg-white rounded-lg shadow-md p-6 md:p-8 text-sm md:text-base">
-          <h3 class="text-xl font-semibold mb-3">Budget &amp; Review</h3>
-          <ul class="list-disc pl-6 space-y-2">
+        <div class="bg-white rounded-2xl shadow p-6 sm:p-8">
+          <h3 class="text-lg font-semibold mb-2">Budget &amp; Review</h3>
+          <ul class="list-disc pl-5 space-y-1.5">
             <li>Allocate funds for conservation, youth training, eco-technologies, research, and engagement.</li>
             <li>Support sustainable livelihoods via micro-grants and cooperative development.</li>
             <li>Ensure quarterly progress reports, annual reviews, and transparent accountability.</li>
@@ -608,41 +640,39 @@
         </div>
       </div>
 
-      <div class="max-w-4xl mx-auto mt-10 text-center text-base md:text-lg">
-        <p>
-          KASPI’s Marshall Plan 2050 charts a path toward a just, peaceful, and sustainable future.
-          By empowering youth, fostering community participation, integrating indigenous wisdom,
-          and leveraging innovative technologies, KASPI works for a resilient planet and a sustainable
-          future for generations to come. 🌳
-        </p>
-      </div>
+      <p class="max-w-4xl mx-auto text-center text-sm sm:text-base mt-6">
+        KASPI’s Marshall Plan 2050 charts a path toward a just, peaceful, and sustainable future.
+        By empowering youth, fostering community participation, integrating indigenous wisdom, and
+        leveraging innovative technologies, KASPI works for a resilient planet and a sustainable future
+        for generations to come. 🌳
+      </p>
     </div>
   </section>
 
-  <!-- Contact Section -->
-  <section id="contact" class="bg-gradient-to-r from-green-700 to-teal-600 text-white py-16">
-    <div class="container mx-auto px-6">
-      <h2 class="text-4xl font-bold mb-12 text-center">Contact Us</h2>
-      <div class="grid md:grid-cols-2 gap-12">
-        <div class="bg-white bg-opacity-10 p-6 rounded-lg">
-          <h3 class="text-2xl font-semibold mb-4">Head Office</h3>
+  <!-- Contact -->
+  <section id="contact" class="bg-emerald-700 text-white py-16">
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+      <h2 class="text-3xl md:text-4xl font-bold text-center mb-10">Contact Us</h2>
+      <div class="grid gap-8 md:grid-cols-2">
+        <div class="bg-white/10 rounded-2xl p-6 sm:p-8 text-sm sm:text-base">
+          <h3 class="text-xl font-semibold mb-3">Head Office</h3>
           <p>P.O. Box 422644, Mbarara, Uganda</p>
-          <p>Telephone: (+256) 782365878</p>
-          <p class="mt-2">
+          <p>Telephone: (+256) 782 365 878</p>
+          <p class="mt-3">
             Email:
-            <a href="mailto:katsaveplanet@gmail.com" class="underline hover:text-green-200">
+            <a href="mailto:katsaveplanet@gmail.com" class="underline hover:text-emerald-200">
               katsaveplanet@gmail.com
             </a>
           </p>
         </div>
-        <div class="bg-white bg-opacity-10 p-6 rounded-lg">
-          <h3 class="text-2xl font-semibold mb-4">Get Involved</h3>
+        <div class="bg-white/10 rounded-2xl p-6 sm:p-8 text-sm sm:text-base">
+          <h3 class="text-xl font-semibold mb-3">Get Involved</h3>
           <p class="mb-4">
             Join us in sustaining the planet through tree planting, youth empowerment, eco-innovation,
-            research, and spiritual-ecological renewal. Volunteer, support, or partner with us.
+            research, and spiritual-ecological renewal. Partner, volunteer, or support our work.
           </p>
           <a href="#home"
-             class="bg-green-500 text-white px-6 py-3 rounded-lg font-semibold hover:bg-green-400 transition duration-300">
+             class="inline-flex items-center justify-center px-5 py-2.5 rounded-full bg-white text-emerald-800 font-semibold hover:bg-emerald-50">
             Get Started
           </a>
         </div>
@@ -651,10 +681,10 @@
   </section>
 
   <!-- Footer -->
-  <footer class="bg-gray-900 text-white py-6 text-center text-sm">
+  <footer class="bg-gray-900 text-white py-5 text-center text-xs sm:text-sm">
     <p>&copy; 2025 Katsave Sustain Planet International (KASPI). All rights reserved.</p>
-    <p class="mt-1 text-xs text-gray-400">
-      Slogan: <span class="italic">“Care, Conserve, and Sustain”</span> • Symbol: 🌳 Green Tree – life, growth, resilience, sustainability.
+    <p class="mt-1 text-gray-400">
+      Slogan: <span class="italic">“Care, Conserve, and Sustain”</span> • Symbol: 🌳 Green Tree — life, growth, resilience, sustainability.
     </p>
   </footer>
 
